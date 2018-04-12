@@ -11,6 +11,7 @@ tags:                               #标签
 ---
 
 ## 搭建博客指南
-进入你的博客主页，新的文章将会出现在你的主页上.
+从一无所有到成功搭建出一个blog，历程可以说是痛苦的。最开始自己也从网上搜了很多资料，例如阮一峰老师的[搭建一个免费的，无限流量的Blog----github Pages和Jekyll入门](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html),自己看了半天还是云里雾里。里面涉及了“很多”命令行操作，同时，这篇文章距离现在实在是···过于久远，所以看完了、跟着敲了命令也收获甚少。
+于是自己在百度直接搜索[GitHub Pages](https://pages.github.com/) + [jekyll](http://jekyll.com.cn/)，收获还是挺多的。具体教程大同小异，先奉上感觉写的最好的一篇——[BYQiu](http://qiubaiying.top/)的[利用 GitHub Pages 快速搭建个人博客](https://www.jianshu.com/p/e68fba58f75c),这片教程写的非常详细，大家可以按照步骤一步一步来。但是，俗话说>人无完人，
 
 
