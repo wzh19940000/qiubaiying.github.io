@@ -1,0 +1,201 @@
+## flex的基本属性
+谈flex布局前先了解下flex的基本属性
+
+flex的基本属性有 <a href='#jump01'>***flex-basis***</a>、<a href='#jump02'>***flex-direction***</a>、<a href='#jump03'>***flex-wrap***</a>、<a href='#jump04'>***flex-flow***</a>、<a href='#jump05'>***flex-grow***</a>、<a href='#jump06'>***flex-shrink***</a> 六个
+***
+### 使用到的HTML模板
+
+```
+   <style> 
+        #main
+        {
+        	width:300px;
+        	height:200px;
+        	border:1px solid black;
+        	display:flex;
+        }
+
+        #main div{
+        	flex:1;
+        }
+    </style>
+    
+    <body>
+        <div id="main">
+          <div class='showDiv' style="background-color:coral;"></div>
+          <div class='showDiv' style="background-color:lightblue;"></div>  
+          <div class='showDiv' style="background-color:lightgreen;"></div>
+        </div>
+    
+        <p><b>注意:</b> Internet Explorer 9 及更早版本不支持 flex 属性。</p>
+        <p><b>注意:</b> Internet Explorer 10 通过 -ms-flex 属性来支持。 IE11 及更新版本完全支持 flex 属性 (不需要 -ms- 前缀)。</p>
+        <p><b>注意:</b> Safari 6.1 (及更新浏览器) 通过 -webkit-flex 属性支持。</p>
+    </body>
+    <script>
+	   var timer = setInterval(function(){
+            var divs=document.getElementsByClassName('showDiv')
+            for (var i=0;i<divs.length;i++){
+              divs[i].innerHTML=divs[i].clientWidth
+            }
+        },1000)
+        timer();
+    </script>
+
+```
+
+此时呈现的样式为：
+
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f11cd8ff75c1e?w=560&h=374&f=png&s=25001)
+
+这里的
+`#main div{ flex:1; }`让所有弹性盒模型对象的子元素都有相同的长度，忽略它们内部的内容。因此看到的三个div宽度相等
+***
+**1. flex 属性用于设置或检索弹性盒模型对象的子元素如何分配空间。**
+
+**2. 如果元素不是弹性盒模型对象的子元素，则 flex 属性不起作用。**
+***
+
+
+[TOC]
+
+### <a id='jump01'>flex-basis</a>
+*flex-basis 用于设置弹性盒子初始大小或伸缩基准值*
+
+例如设置第二个弹性盒子元素的初始长度为126像素，css设置如下：
+```
+    #main div:nth-of-type(2) {flex-basis: 40px;}
+```
+此时呈现的样式为：
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f11f50804eeb3?w=747&h=382&f=png&s=28601)
+
+可以看到第二个背景为蓝色的div宽度为126px，其余两个div宽度为87px。这是因为上面第二个div设置了`flex-basis: 40px;`,导致ID为`#main`的大div（父级盒子）优先分配给第二个div 40px的宽度，剩下的260px宽度再平均分配给三个子级div（因为前面设置了`#main div{ flex:1; }`，所以三个div都拥有相同的长度/宽度）。
+
+简而言之，**flex-basis**就是从父级中提前取出一定大小的长度提前分配给指定元素。
+
+### <a id='jump02'>flex-direction</a>
+*flex-direction 用于设置弹性盒子内子元素的排列放向。*
+
+*flex-direction*常用的的属性值有：row、row-reverse、column、column-reverse，分别对应：按行排列、按行反序排列、按列排列、按列反序排列。
+
+例如设置`#main`盒子内的元素按行反序排列：
+```
+    #main{flex-direction: row-reverse;}
+```
+此时呈现的样式为：
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f128c2dccce45?w=684&h=394&f=png&s=27838)
+可以看到原来从左至右的div背景为红蓝绿，设置后从左至右的div背景为绿蓝红，顺序刚好反过来了。
+如果设置如下：
+```
+    #main{flex-direction: column-reverse;}
+```
+那么div将按列反序排列，从上到下依次为背景色是绿蓝红的div，如下图所示：
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f12cb2f4eb64d?w=567&h=389&f=png&s=25994)
+
+### <a id='jump03'>flex-wrap</a>
+*flex-wrap 用于规定flex容器是单行或者多行，同时横轴的方向决定了新行堆叠的方向。*
+
+*flex-wrap* 常用的属性值有：nowrap、wrap、wrap-reverse。 
+1. `nowrap`为默认值，规定灵活的项目不拆行或不拆列。
+2. `wrap`规定灵活的项目在必要的时候拆行或拆列。
+3. `wrap-reverse`规定灵活的项目在必要的时候拆行或拆列，但是以相反的顺序。
+例如HTML部分设置如下：
+```
+<div id="main">
+  <div style="background-color:coral;">A</div>
+  <div style="background-color:lightblue;">B</div>
+  <div style="background-color:khaki;">C</div>
+  <div style="background-color:pink;">D</div>
+  <div style="background-color:lightgrey;">E</div>
+  <div style="background-color:lightgreen;">F</div>
+</div>
+```
+CSS部分设置如下：
+```
+#main {
+  width: 200px;
+  height: 150px;
+  border: 1px solid #c3c3c3;
+  display: flex;
+  flex-wrap: wrap;
+}
+#main div {
+  width: 50px;
+  height: 50px;
+}
+```
+此时，定义了 `flex-wrap: wrap;` ，六个div宽度总和300px超出了 `#main` 父元素的宽度，子元素div将自动换行排列。
+
+结果显示如下：
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f158b5e34707c?w=416&h=316&f=png&s=5215)
+
+如果将 `flex-wrap: wrap;` 设置为： `flex-wrap: wrap-reverse;`，那么当发生换行(列)时，将会反序排列。
+效果如下：
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f16149a2fc291?w=325&h=195&f=png&s=3470)
+
+如果将 `flex-wrap: wrap;` 设置为：`flex-wrap:nowrap;`，那么子元素div将不会换行排列(*不是超出部分不显示了，而是子元素div的宽度将改变以适应父元素宽度*)，效果如下：
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f15fdb55c4514?w=279&h=196&f=png&s=3276)
+
+### <a id='jump04'>flex-flow</a>
+*flex-flow 属性是 flex-direction 和 flex-wrap 属性的复合属性。flex-flow 属性用于设置或检索弹性盒模型对象的子元素排列方式。flex-direction 属性规定灵活项目的方向。*
+*flex-flow 默认值为：`flex-flow:row nowrap;`*
+CSS语法为：
+>flex-flow: flex-direction  flex-wrap | initial | inherit;
+
+### <a id='jump05'>flex-grow</a>
+*flex-grow 属性用于设置或检索弹性盒的扩展比率。*
+例如在最初的模板中给CSS设置：
+```
+#main div{flex-basis:50px;}
+
+#main div:nth-of-type(1) {flex-grow: 1;}
+#main div:nth-of-type(2) {flex-grow: 3;}
+#main div:nth-of-type(3) {flex-grow: 1;}
+```
+同时去掉`#main div{flex:1;}`,效果如下：
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f18d859f618d3?w=540&h=367&f=png&s=24580)
+
+此处设置了每个div的`flex-basis:50px;`，即每个div基础宽度为50px；而容器总宽度为300px，超出div总宽度150px。剩下的宽度按照 *flex-grow* 分配的1、3、1这样将150px平均分成五份再根据各自的份数加上div基础宽度，所以第一个div宽度为： 50+（150/5）* 1 = 80 px ； 类似的第二个div宽度为： 50 + （150/5） * 3 = 140px。
+
+### <a id='jump06'>flex-shrink</a>
+*flex-shrink 属性用于设置或检索弹性盒的收缩比率。*
+
+**但是，`flex-shrink ` 计算收缩量的算法并不同于 `flex-grow`。`flex-shrink ` 计算收缩量的算法使用的是一种加权平均数的算法。**
+
+例如在最初的模板中给CSS设置：
+```
+#main div:nth-of-type(1) {flex-shrink: 1;flex-basis:200px;}
+#main div:nth-of-type(2) {flex-shrink: 3;flex-basis:100px;}
+#main div:nth-of-type(3) {flex-shrink: 1;flex-basis:100px;}
+```
+此时显示如下：
+![Markdown](https://user-gold-cdn.xitu.io/2018/4/23/162f1b46628fd2c4?w=548&h=365&f=png&s=24969)
+可以看到三个div的宽度分别是：167px、50px、83px。
+
+具体算法如下：
+
+1. 先算出超出的宽度：a=200+100+100-300=100px
+    
+    **超出的100px将按照收缩比1:3:1收缩。**
+2. 在算出每个元素的乘积(用自身宽度乘以分配的权重（flex-shrink）)：
+  * div1 ：b1=200*1=200
+  * div2 ：b2=100*3=300
+  * div3 ：b3=100*1=100
+  * 总和为 c=600
+3. 计算每个元素收缩量
+  * div1 ：d1=(b1/c)*a=33.3 px
+  * div2 ：d2=(b2/c)*a=50 px
+  * div3 ：d3=(b3/c)*a=16.7 px
+4. 计算每个元素实际宽度
+  * div1 ：w1=200-33.3=166.7px
+  * div2 ：w2=100-50=50px
+  * div3 ：w3=100-16.7=83.3px
+
+
+
+
+
+
+
+
+
+
